@@ -23,6 +23,11 @@ export default function Page() {
 
   return (
     <LayoutShell>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900">Student Portal</h1>
+        <p className="text-gray-600 mt-2">Submit classroom booking requests and track your reservations</p>
+      </div>
+      
       <div className="grid gap-3">
         <BookingForm />
         <Card>

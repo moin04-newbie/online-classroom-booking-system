@@ -40,42 +40,36 @@ export default function QuickLinks() {
       icon: Calendar,
       label: "Book Room",
       href: "/book",
-      gradient: "from-blue-500 to-cyan-500",
       description: "Schedule a classroom"
     },
     {
       icon: BarChart3,
       label: "Analytics",
       href: "/analytics",
-      gradient: "from-purple-500 to-pink-500",
       description: "View insights"
     },
     {
       icon: Users,
       label: "Users",
       href: "/users",
-      gradient: "from-green-500 to-teal-500",
       description: "Manage users"
     },
     {
       icon: Monitor,
       label: "Equipment",
       href: "/equipment",
-      gradient: "from-orange-500 to-red-500",
       description: "Track equipment"
     },
     {
       icon: BookOpen,
       label: "Bookings",
       href: "/bookings",
-      gradient: "from-indigo-500 to-purple-500",
       description: "View all bookings"
     },
     {
       icon: Settings,
       label: "Admin",
       href: "/admin",
-      gradient: "from-gray-500 to-slate-500",
       description: "System settings"
     }
   ]
@@ -119,7 +113,7 @@ export default function QuickLinks() {
     <div className="space-y-6">
       {/* Quick Actions */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+        <h3 className="text-lg font-semibold mb-4 text-slate-700">
           Quick Actions
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -134,7 +128,7 @@ export default function QuickLinks() {
               >
                 <Button
                   variant="outline"
-                  className={`h-20 w-full flex flex-col items-center justify-center space-y-1 bg-gradient-to-r ${action.gradient} text-white border-0 hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl`}
+                  className="h-20 w-full flex flex-col items-center justify-center space-y-1 bg-slate-700 text-white border-slate-600 hover:bg-slate-600 hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
                   onClick={() => router.push(action.href)}
                 >
                   <IconComponent className="h-6 w-6" />
@@ -148,7 +142,7 @@ export default function QuickLinks() {
 
       {/* Statistics Cards */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+        <h3 className="text-lg font-semibold mb-4 text-slate-700">
           System Overview
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -171,22 +165,17 @@ export default function QuickLinks() {
                         <p className="text-2xl font-bold">{stat.value}</p>
                         <div className="flex items-center mt-1">
                           <Activity className={`h-3 w-3 mr-1 ${
-                            stat.trendUp ? "text-green-600" : "text-red-600"
+                            stat.trendUp ? "text-slate-600" : "text-slate-500"
                           }`} />
                           <span className={`text-xs ${
-                            stat.trendUp ? "text-green-600" : "text-red-600"
+                            stat.trendUp ? "text-slate-600" : "text-slate-500"
                           }`}>
                             {stat.trend}
                           </span>
                         </div>
                       </div>
-                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${
-                        stat.color === "text-blue-600" ? "from-blue-100 to-blue-200" :
-                        stat.color === "text-orange-600" ? "from-orange-100 to-orange-200" :
-                        stat.color === "text-green-600" ? "from-green-100 to-green-200" :
-                        "from-purple-100 to-purple-200"
-                      } flex items-center justify-center`}>
-                        <IconComponent className={`h-6 w-6 ${stat.color}`} />
+                      <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center">
+                        <IconComponent className="h-6 w-6 text-slate-600" />
                       </div>
                     </div>
                   </CardContent>

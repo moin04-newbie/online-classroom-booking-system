@@ -38,9 +38,9 @@ export default function Page() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-6 text-white"
+          className="relative overflow-hidden rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-white shadow-lg"
         >
-          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-black/10" />
           <div className="relative z-10 grid gap-4 md:grid-cols-3">
             <div className="text-center">
               <Users className="mx-auto mb-2 h-8 w-8" />
@@ -99,7 +99,7 @@ export default function Page() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button 
-                  className="w-full justify-start bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                  className="w-full justify-start bg-slate-700 hover:bg-slate-800 text-white"
                   onClick={() => window.location.href = '/book'}
                 >
                   <Calendar className="mr-2 h-4 w-4" />
@@ -162,7 +162,7 @@ export default function Page() {
                     <span className="text-sm">Room 102</span>
                     <div className="flex items-center gap-2">
                       <Progress value={0} className="w-16 h-2" />
-                      <Badge className="bg-green-500">Free</Badge>
+                      <Badge className="bg-slate-600 hover:bg-slate-700 text-white">Free</Badge>
                     </div>
                   </div>
                 </div>

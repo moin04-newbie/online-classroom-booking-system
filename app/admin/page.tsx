@@ -40,6 +40,11 @@ export default function Page() {
 
   return (
     <LayoutShell>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+        <p className="text-gray-600 mt-2">Manage rooms, approve booking requests, and oversee system operations</p>
+      </div>
+      
       <div className="grid gap-3 lg:grid-cols-2">
         <Card>
           <CardHeader><CardTitle>Add / Edit Rooms</CardTitle></CardHeader>

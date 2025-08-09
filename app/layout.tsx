@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { RealTimeProvider } from '@/components/realtime-provider'
+import { AuthProvider } from '@/components/auth-provider'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -27,9 +28,11 @@ html {
         `}</style>
       </head>
       <body>
-        <RealTimeProvider>
-          {children}
-        </RealTimeProvider>
+        <AuthProvider>
+          <RealTimeProvider>
+            {children}
+          </RealTimeProvider>
+        </AuthProvider>
       </body>
     </html>
   )

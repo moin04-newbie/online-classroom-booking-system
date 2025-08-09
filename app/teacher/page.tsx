@@ -24,6 +24,11 @@ export default function Page() {
 
   return (
     <LayoutShell>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900">Teacher Dashboard</h1>
+        <p className="text-gray-600 mt-2">Book classrooms for your classes and manage student booking requests</p>
+      </div>
+      
       <div className="grid gap-3 lg:grid-cols-[2fr_1fr]">
         <BookingForm />
         <Card>
