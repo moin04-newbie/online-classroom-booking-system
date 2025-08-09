@@ -9,15 +9,15 @@ import {
   signOut,
   updateProfile
 } from 'firebase/auth'
-import { doc, setDoc, getDoc } from 'firebase/firestore'
+import { ref, set, get, child } from 'firebase/database'
 import { auth, db } from '@/lib/firebase'
 
 interface UserProfile {
   id: string
   email: string
   name: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 interface AuthContextType {
@@ -49,18 +49,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(user)
       
       if (user) {
-        // Fetch user profile from Firestore
-        const userDocRef = doc(db, 'users', user.uid)
-        const userDoc = await getDoc(userDocRef)
+        // Fetch user profile from Realtime Database
+        const userRef = ref(db, `users/${user.uid}`)
+        const snapshot = await get(userRef)
         
-        if (userDoc.exists()) {
-          const data = userDoc.data()
+        if (snapshot.exists()) {
+          const data = snapshot.val()
           setUserProfile({
             id: user.uid,
             email: user.email!,
             name: data.name,
-            createdAt: data.createdAt?.toDate() || new Date(),
-            updatedAt: data.updatedAt?.toDate() || new Date(),
+            createdAt: data.createdAt,
+            updatedAt: data.updatedAt,
           })
         }
       } else {
@@ -91,15 +91,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Update the user's display name
       await updateProfile(user, { displayName: name })
       
-      // Create user profile in Firestore
+      // Create user profile in Realtime Database
       const userProfile: Omit<UserProfile, 'id'> = {
         email,
         name,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       }
       
-      await setDoc(doc(db, 'users', user.uid), userProfile)
+      await set(ref(db, `users/${user.uid}`), userProfile)
     } catch (error) {
       setLoading(false)
       throw error
