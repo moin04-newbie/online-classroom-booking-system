@@ -38,14 +38,34 @@ export default function UsersPage() {
     department: "",
     phone: ""
   })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string>("")
 
   const loadUsers = async () => {
+    setLoading(true)
+    setError("")
     try {
       const response = await fetch("/api/users")
       const data = await response.json()
-      setUsers(data.users)
-    } catch (error) {
-      console.error("Failed to load users:", error)
+      // Debug log
+      console.log("API /api/users response:", data)
+      // Accept both array and object responses
+      if (Array.isArray(data)) {
+        setUsers(data)
+      } else if (Array.isArray(data.users)) {
+        setUsers(data.users)
+      } else {
+        setUsers([])
+        setError("Unexpected API response format.")
+      }
+    } catch (err) {
+      setError(
+        "Failed to load users: " +
+        (err instanceof Error ? err.message : String(err))
+      )
+      setUsers([])
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -53,13 +73,14 @@ export default function UsersPage() {
     loadUsers()
   }, [])
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = Array.isArray(users) ? users.filter(user => {
+    const matchesSearch =
+      (user.name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (user.email?.toLowerCase() || "").includes(searchTerm.toLowerCase())
     const matchesRole = roleFilter === "all" || user.role === roleFilter
     const matchesStatus = statusFilter === "all" || user.status === statusFilter
     return matchesSearch && matchesRole && matchesStatus
-  })
+  }) : []
 
   const handleAddUser = async () => {
     try {
@@ -116,66 +137,30 @@ export default function UsersPage() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-6"
       >
+        {/* Error and Loading States */}
+        {loading && (
+          <div className="w-full flex justify-center items-center py-8">
+            <span className="text-lg text-muted-foreground">Loading users...</span>
+          </div>
+        )}
+        {error && (
+          <div className="w-full flex justify-center items-center py-4">
+            <span className="text-red-600 font-semibold">{error}</span>
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold">User Management</h1>
             <p className="text-muted-foreground">Manage system users and their access</p>
           </div>
-          <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-            <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
-                <UserPlus className="mr-2 h-4 w-4" />
-                Add User
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New User</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <Input
-                  placeholder="Full Name"
-                  value={newUser.name}
-                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                />
-                <Input
-                  type="email"
-                  placeholder="Email Address"
-                  value={newUser.email}
-                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                />
-                <Select value={newUser.role} onValueChange={(value: any) => setNewUser({ ...newUser, role: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="student">Student</SelectItem>
-                    <SelectItem value="teacher">Teacher</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Input
-                  placeholder="Department (Optional)"
-                  value={newUser.department}
-                  onChange={(e) => setNewUser({ ...newUser, department: e.target.value })}
-                />
-                <Input
-                  placeholder="Phone Number (Optional)"
-                  value={newUser.phone}
-                  onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-                />
-              </div>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={handleAddUser} disabled={!newUser.name || !newUser.email}>
-                  Add User
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <div className="flex gap-2">
+            <Button onClick={() => setShowAddDialog(true)} className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
+              <UserPlus className="mr-2 h-4 w-4" />
+              Add User
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -188,7 +173,7 @@ export default function UsersPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{users.length}</div>
+              <div className="text-2xl font-bold">{Array.isArray(users) ? users.length : 0}</div>
             </CardContent>
           </Card>
           <Card>

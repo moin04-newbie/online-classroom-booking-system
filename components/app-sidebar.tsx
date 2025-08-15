@@ -50,12 +50,6 @@ const roleViewItems = [
   { title: "User Management", url: "/users", icon: Users },
 ]
 
-// Authentication menu items
-const authItems = [
-  { title: "Sign In", url: "/auth/signin", icon: LogIn },
-  { title: "Sign Up", url: "/auth/signup", icon: UserPlus },
-]
-
 export function AppSidebar() {
   const { user, userProfile, logout } = useAuth()
 
@@ -75,6 +69,14 @@ export function AppSidebar() {
             <BookOpen className="h-4 w-4 text-white" />
           </div>
           <div className="font-semibold text-black">ClassroomHub</div>
+        </div>
+        <div className="flex gap-2 mt-3">
+          <Link href="/auth/signin">
+            <Button size="sm" variant="outline" className="text-black border-black">Sign In</Button>
+          </Link>
+          <Link href="/auth/signup">
+            <Button size="sm" variant="outline" className="text-black border-black">Sign Up</Button>
+          </Link>
         </div>
       </SidebarHeader>
       <SidebarContent className="pb-2">
@@ -114,21 +116,19 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         
-        {!user && (
+        {user && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-black">Authentication</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-black">User Management</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {authItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="hover:text-black text-black" >
-                      <Link href={item.url} aria-label={item.title}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild className="hover:text-black text-black" >
+                    <Link href="/users" aria-label="User Management">
+                      <Users className="h-5 w-5" />
+                      <span>User Management</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
